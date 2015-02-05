@@ -47,7 +47,8 @@
             width: "200px",
             height: "50px",
             cursor: "pointer",
-            color: "#fff"
+            color: "#fff",
+            backgroundColor: "rgba(255,255,255,.2)"
           });
 
           this.setEvents({
@@ -63,7 +64,7 @@
             },
             "mouseout": function() {
               TweenMax.to(_this.getElement(), .1, {
-                backgroundColor: "transparent",
+                backgroundColor: "rgba(255,255,255,.2)",
                 color: "#fff"
               });
               TweenMax.to(_this.label, .1, {
