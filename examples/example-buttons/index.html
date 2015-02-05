@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head>
-    <title>Simple Test</title>
+    <title>Buttons Test</title>
     <style media="screen">
       * {
         box-sizing: border-box;
@@ -29,8 +29,6 @@
       });
 
       var buttonContainer = new goolib.DisplayObject();
-      buttonContainer.x = window.innerWidth / 2;
-      buttonContainer.y = window.innerHeight / 2;
       stage.addChild(buttonContainer);
 
       var AbstractButton = goolib.DisplayObject.extend({
@@ -46,8 +44,6 @@
           this._super();
           this.setText(label);
           this.setStyles({
-            padding: "10px 20px",
-            width: "120px",
             textAlign: "center",
             background: "#fff"
           });
@@ -55,9 +51,12 @@
           var _this = this;
           this.setEvents({
             mouseover: function() {
+              _this.setStyles({
+                zIndex: 2
+              });
               TweenMax.to(_this.getElement(), .1, {
                 backgroundColor: "#F00",
-                scale: 1.05,
+                scale: 1.3,
                 overwrite: "auto"
               });
             },
@@ -65,17 +64,30 @@
               TweenMax.to(_this.getElement(), .5, {
                 backgroundColor: "#FFF",
                 scale: 1,
-                overwrite: "auto"
+                overwrite: "auto",
+                onComplete: function() {
+                  _this.setStyles({
+                    zIndex: 1
+                  });
+                }
               });
             }
           });
         }
       });
 
-      for (var i = 0; i < 25; i++) {
-        var b = new SimpleButton("Button " + i);
-        b.x = i % 5 * 125 - 312;
-        b.y = Math.floor(i / 5) * 40 - 100;
+      var rows = 20;
+      var cols = 10;
+      var buttonWidth = window.innerWidth / cols;
+      var buttonHeight = window.innerHeight / rows;
+      for (var i = 0; i < rows * cols; i++) {
+        var b = new SimpleButton(i);
+        b.x = i % cols * buttonWidth;
+        b.y = Math.floor(i / cols) * buttonHeight;
+        b.setStyles({
+          width: buttonWidth + "px",
+          height: buttonHeight + "px"
+        });
         buttonContainer.addChild(b);
       }
     </script>

@@ -1,0 +1,257 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Buttons Test</title>
+    <meta name="viewport" content="maximum-scale=1,minimum-scale=1,width=device-width">
+    <style media="screen">
+      * {
+        box-sizing: border-box;
+      }
+
+      body, html {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        font-family: helvetica, arial;
+      }
+    </style>
+  </head>
+  <body>
+
+    <script src="../../dist/goolib.js" charset="utf-8"></script>
+    <script src="../vendor/TweenMax.min.js" charset="utf-8"></script>
+    <script type="text/javascript">
+      var stage = new goolib.DisplayObject();
+      document.body.appendChild(stage.getElement());
+      stage.setStyles({
+        width: "100%",
+        height: "100%",
+        background: "#c0c0c0"
+      });
+
+      var MenuItem = goolib.DisplayObject.extend({
+        init: function(label) {
+          var _this = this;
+
+          this.label = new goolib.DisplayObject();
+          this.label.setText(label);
+
+          this.label.setStyles({
+            top: "50%",
+            left: "20px",
+            pointerEvents: "none"
+          });
+          this.label.y = -7;
+
+          this.setStyles({
+            width: "200px",
+            height: "50px",
+            cursor: "pointer",
+            color: "#fff"
+          });
+
+          this.setEvents({
+            "mouseenter": function() {
+              TweenMax.to(_this.getElement(), .1, {
+                backgroundColor: "#eaff00",
+                color: "#3cd4bb"
+              });
+              TweenMax.to(_this.label, .3, {
+                x: 10,
+                ease: Quad.easeOut
+              });
+            },
+            "mouseout": function() {
+              TweenMax.to(_this.getElement(), .1, {
+                backgroundColor: "transparent",
+                color: "#fff"
+              });
+              TweenMax.to(_this.label, .1, {
+                x: 0
+              });
+            }
+          });
+
+          this.addChild(this.label);
+        }
+      });
+
+      var AbstractMenu = goolib.DisplayObject.extend({
+        init: function() {
+          this.items = [];
+        },
+        addItems: function(items) {
+          this.items = items;
+          this.layoutMenu();
+        },
+        layoutMenu: function() {}
+      });
+
+      var ArrowButton = goolib.DisplayObject.extend({
+        init: function() {
+          var _this = this;
+          this.toggled = false;
+
+          this.openLabel = new goolib.DisplayObject();
+          this.openLabel.setText(">");
+
+          this.closeLabel = new goolib.DisplayObject();
+          this.closeLabel.setText("X");
+
+          this.overlay = new goolib.DisplayObject();
+
+          this.addChild(this.openLabel);
+          this.addChild(this.closeLabel);
+          this.addChild(this.overlay);
+
+          this.overlay.setStyles({
+            opacity: 0,
+            width: "50px",
+            height: "50px",
+            backgroundColor: "#fff"
+          });
+          this.openLabel.setStyles({
+            color: "#689d00",
+            opacity: 1
+          });
+          this.closeLabel.setStyles({
+            color: "#fff",
+            opacity: 0
+          });
+          this.openLabel.x = 20;
+          this.openLabel.y = 17;
+
+          this.closeLabel.x = 20;
+          this.closeLabel.y = 18;
+
+          this.setStyles({
+            width: "50px",
+            height: "50px",
+            background: "#eaff00",
+            cursor: "pointer"
+          });
+
+          this.setEvents({
+            "mouseenter": function() {
+              TweenMax.to(_this.overlay.getElement(), .1, {
+                opacity: .3
+              });
+            },
+            "mouseout": function() {
+              TweenMax.to(_this.overlay.getElement(), .1, {
+                opacity: 0
+              });
+            }
+          });
+        },
+        toggleClose: function() {
+          if (this.toggled) {
+            TweenMax.to(this.getElement(), .7, {
+              backgroundColor: "#eaff00"
+            });
+            TweenMax.to(this.openLabel.getElement(), .4, {
+              opacity: 1
+            });
+            TweenMax.to(this.closeLabel.getElement(), .4, {
+              opacity: 0
+            });
+          }else{
+            TweenMax.to(this.getElement(), .7, {
+              backgroundColor: "#7bee00"
+            });
+            TweenMax.to(this.openLabel.getElement(), .4, {
+              opacity: 0
+            });
+            TweenMax.to(this.closeLabel.getElement(), .4, {
+              opacity: 1
+            });
+          }
+          this.toggled = !this.toggled;
+        }
+      });
+
+      var SideMenu = AbstractMenu.extend({
+        init: function() {
+          var _this = this;
+          this._super();
+
+          this.isOpen = false;
+
+          this.btnOpen = new ArrowButton();
+
+          this.itemContainer = new goolib.DisplayObject();
+          this.itemContainer.setStyles({
+            width: "200px",
+            height: window.innerHeight + "px",
+            background: "#3cd4bb"
+          });
+          this.itemContainer.x = -200;
+
+          this.btnOpen.setEvents({
+            "click": function() {
+              _this.toggle();
+            }
+          });
+
+          this.addChild(this.btnOpen);
+          this.addChild(this.itemContainer);
+        },
+        layoutMenu: function() {
+          for (var i = 0; i < this.items.length; i++) {
+            this.items[i].y = 50 * i;
+            this.items[i].x = -200;
+            this.itemContainer.addChild(this.items[i]);
+          }
+        },
+        toggle: function() {
+          var _this = this;
+
+          if (this.isOpen) {
+            TweenMax.staggerTo(_this.items, .5, {
+              x: -200,
+            }, .02);
+            TweenMax.to(_this.itemContainer.getElement(), .7, {
+              delay: .1,
+              ease: Quad.easeInOut,
+              x: -200
+            });
+            TweenMax.to(_this.btnOpen.getElement(), .7, {
+              delay: .1,
+              ease: Quad.easeInOut,
+              x: 0
+            });
+            this.btnOpen.toggleClose();
+          }else{
+            TweenMax.to(this.itemContainer.getElement(), .7, {
+              ease: Quad.easeOut,
+              x: 0
+            });
+            TweenMax.to(this.btnOpen.getElement(), .7, {
+              ease: Quad.easeOut,
+              x: 200
+            });
+
+            TweenMax.staggerTo(this.items, .5, {
+              delay: .2,
+              x: 0
+            }, .05);
+            this.btnOpen.toggleClose();
+          }
+          this.isOpen = !this.isOpen;
+        }
+      });
+
+      var sideMenu = new SideMenu();
+      sideMenu.addItems([
+        new MenuItem("Home"),
+        new MenuItem("Products"),
+        new MenuItem("About"),
+        new MenuItem("Cheesecake"),
+        new MenuItem("Banana"),
+        new MenuItem("Cookie Monster"),
+      ]);
+
+      stage.addChild(sideMenu);
+    </script>
+  </body>
+</html>

@@ -98,10 +98,10 @@ var DisplayObject = Class.extend({
   getElement: function() {
     return this._element;
   },
-  getWidth: function () {
+  getWidth: function() {
     return this._element.offsetWidth;
   },
-  getHeight: function () {
+  getHeight: function() {
     return this._element.offsetHeight;
   },
 
@@ -128,6 +128,10 @@ var DisplayObject = Class.extend({
   },
   addEventListener: function(evt, cb) {
     this._element.addEventListener(evt, cb);
+  },
+
+  removeChild: function(displayObject) {
+    this._element.removeChild(displayObject._element);
   }
 });
 
