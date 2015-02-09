@@ -64,9 +64,10 @@ var DisplayObject = Class.extend({
       },
       set: function(value) {
         _x = value;
-        _this.setStyles({
-          transform: "translate3d("+_x+"px, "+_y+"px, "+_z+"px)"
-        })
+
+        var obj = {};
+        obj[goolib.transformWithPrefix] = "translate3d("+_x+"px, "+_y+"px, "+_z+"px)";
+        _this.setStyles(obj);
       }
     });
     Object.defineProperty(this, "y", {
@@ -75,9 +76,9 @@ var DisplayObject = Class.extend({
       },
       set: function(value) {
         _y = value;
-        _this.setStyles({
-          transform: "translate3d("+_x+"px, "+_y+"px, "+_z+"px)"
-        })
+        var obj = {};
+        obj[goolib.transformWithPrefix] = "translate3d("+_x+"px, "+_y+"px, "+_z+"px)";
+        _this.setStyles(obj);
       }
     });
     Object.defineProperty(this, "z", {
@@ -86,9 +87,9 @@ var DisplayObject = Class.extend({
       },
       set: function(value) {
         _z = value;
-        _this.setStyles({
-          transform: "translate3d("+_x+"px, "+_y+"px, "+_z+"px)"
-        })
+        var obj = {};
+        obj[goolib.transformWithPrefix] = "translate3d("+_x+"px, "+_y+"px, "+_z+"px)";
+        _this.setStyles(obj);
       }
     });
 
@@ -116,7 +117,7 @@ var DisplayObject = Class.extend({
     }
   },
   setText: function(text) {
-    this._element.innerText = text;
+    this._element.textContent = text;
   },
 
   addChild: function(displayObject) {

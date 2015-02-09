@@ -1,5 +1,21 @@
 !function() {
   window.goolib = {};
+
+
+  goolib.getStylePrefix = function(style) {
+    var tests = ["webkit", "moz", "ms", "o"];
+    if (typeof document.body.style[style] != "undefined") return style;
+    for (var i = 0; i < tests.length; i++) {
+      if (typeof document.body.style[tests[i]+style.charAt(0).toUpperCase()+style.slice(1)] != "undefined") {
+        return tests[i] + style.charAt(0).toUpperCase()+style.slice(1);
+      }
+    }
+    return null;
+  }
+
+  goolib.transformWithPrefix = goolib.getStylePrefix("transform");
+  
+
   /* Simple JavaScript Inheritance
   * By John Resig http://ejohn.org/
   * MIT Licensed.
@@ -131,9 +147,10 @@
         },
         set: function(value) {
           _x = value;
-          _this.setStyles({
-            transform: "translate3d("+_x+"px, "+_y+"px, "+_z+"px)"
-          })
+  
+          var obj = {};
+          obj[goolib.transformWithPrefix] = "translate3d("+_x+"px, "+_y+"px, "+_z+"px)";
+          _this.setStyles(obj);
         }
       });
       Object.defineProperty(this, "y", {
@@ -142,9 +159,9 @@
         },
         set: function(value) {
           _y = value;
-          _this.setStyles({
-            transform: "translate3d("+_x+"px, "+_y+"px, "+_z+"px)"
-          })
+          var obj = {};
+          obj[goolib.transformWithPrefix] = "translate3d("+_x+"px, "+_y+"px, "+_z+"px)";
+          _this.setStyles(obj);
         }
       });
       Object.defineProperty(this, "z", {
@@ -153,9 +170,9 @@
         },
         set: function(value) {
           _z = value;
-          _this.setStyles({
-            transform: "translate3d("+_x+"px, "+_y+"px, "+_z+"px)"
-          })
+          var obj = {};
+          obj[goolib.transformWithPrefix] = "translate3d("+_x+"px, "+_y+"px, "+_z+"px)";
+          _this.setStyles(obj);
         }
       });
   
@@ -183,7 +200,7 @@
       }
     },
     setText: function(text) {
-      this._element.innerText = text;
+      this._element.textContent = text;
     },
   
     addChild: function(displayObject) {
