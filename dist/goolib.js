@@ -1,6 +1,6 @@
 !function() {
+  // Main goolib namespace object
   window.goolib = {};
-
 
   goolib.getStylePrefix = function(style) {
     var tests = ["webkit", "moz", "ms", "o"];
@@ -14,8 +14,6 @@
   }
 
   goolib.transformWithPrefix = goolib.getStylePrefix("transform");
-  
-
   /* Simple JavaScript Inheritance
   * By John Resig http://ejohn.org/
   * MIT Licensed.
@@ -81,51 +79,6 @@
   })();
   
 
-  // function DisplayObject() {
-  //   this._init();
-  //   if (this.init) this.init();
-  // }
-  // DisplayObject.prototype._init = function() {
-  //   this._element = document.createElement("div");
-  //   this._element.className = "display-object";
-  //
-  //   this.setStyles({
-  //     position: "absolute"
-  //   });
-  // }
-  // DisplayObject.extend = function () {
-  //   var newFunc = function(){};
-  //   newFunc.prototype = Object.create(this.prototype);
-  //   newFunc.constructor = this.constructor;
-  //   return newFunc;
-  // };
-  // DisplayObject.prototype.getElement = function () {
-  //   return this._element;
-  // };
-  // DisplayObject.prototype.addChild = function (displayObject) {
-  //   try {
-  //     this._element.appendChild(displayObject._element);
-  //   } catch(error) {
-  //     throw("addChild error: DisplayObject.addChild expects another DisplayObject")
-  //   }
-  // };
-  // DisplayObject.prototype.setEvents = function (events) {
-  //   for (var key in events) {
-  //     this._element.addEventListener(key, events[key]);
-  //   }
-  // };
-  // DisplayObject.prototype.setStyles = function (styles) {
-  //   for (var key in styles) {
-  //     this._element.style[key] = styles[key];
-  //   }
-  // };
-  // DisplayObject.prototype.getWidth = function () {
-  //   return this._element.offsetWidth;
-  // };
-  // DisplayObject.prototype.getHeight = function () {
-  //   return this._element.offsetHeight;
-  // };
-  
   var DisplayObject = Class.extend({
     __init: function() {
       var _this = this,
@@ -216,12 +169,20 @@
   
     removeChild: function(displayObject) {
       this._element.removeChild(displayObject._element);
+    },
+  
+    dispatchEvent: function(eventName, data, bubbles, cancelable) {
+      var evt = new CustomEvent(eventName, {
+        detail: data || {},
+        bubbles: bubbles || true,
+        cancelable: cancelable || false,
+      });
+      this._element.dispatchEvent(evt);
     }
   });
   
   goolib.DisplayObject = DisplayObject;
   
-
 
 
 }();

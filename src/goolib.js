@@ -1,6 +1,6 @@
 !function() {
+  // Main goolib namespace object
   window.goolib = {};
-
 
   goolib.getStylePrefix = function(style) {
     var tests = ["webkit", "moz", "ms", "o"];
@@ -15,9 +15,7 @@
 
   goolib.transformWithPrefix = goolib.getStylePrefix("transform");
 
-  //= include inc/prefix.js
   //= include entities/Class.js
   //= include entities/DisplayObject.js
-
 
 }();
