@@ -1,5 +1,6 @@
 var gulp          = require("gulp"),
-    include       = require("gulp-include");
+    include       = require("gulp-include"),
+    babel         = require("gulp-babel");
 
 
 gulp.task("scripts", function() {
@@ -8,6 +9,11 @@ gulp.task("scripts", function() {
   gulp.src("src/goolib.js")
     .pipe(include())
       .on("error", console.log)
+    .pipe(babel({
+      presets: [
+        "es2015"
+      ]
+    }))
     .pipe(gulp.dest("dist"));
 });
 
