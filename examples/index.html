@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Test</title>
+    <title>Layers layers layers</title>
     <style>
       html, body {
         height: 100%;
@@ -26,13 +26,15 @@
         background: #dddddd;
       }
     </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/styles/default.min.css">
   </head>
   <body>
     <div class="wrapper">
       <div class="wrapper__inner">
         <h1>Goolib</h1>
 
-        <pre>
+<pre><code class="javascript">
 var layer = new goolib.Layer("div", {
   position: "absolute",
   width: 100,
@@ -48,11 +50,11 @@ layer.to(1, {
   ease: Quad.easeInOut,
   yoyo: true
 });
-        </pre>
+</code></pre>
         <div class="example example-1"></div>
 
         <p><strong>Events:</strong></p>
-        <pre>
+        <pre><code class="javascript">
 var layer = new goolib.Layer("div", {
   position: "absolute",
   top: "50%",
@@ -84,39 +86,41 @@ layer.on("click", function() {
     rotation: 360
   })
 });
-        </pre>
+        </code></pre>
         <div class="example example-2"></div>
 
         <p><strong>Layers in layers</strong></p>
-        <pre>
-var t3 = new goolib.Layer("div", {
+        <pre><code class="javascript">
+var layer = new goolib.Layer("div", {
   padding: "16px"
 });
-t3.addTo(document.querySelector('.example-3'));
+layer.addTo(document.querySelector('.example-3'));
 
 for (var i = 0; i < 6; i++) {
-  var t3l = new goolib.Layer("div", {
+  var nested = new goolib.Layer("div", {
     padding: "10px"
   });
-  t3l.text("Layer " + i);
-  t3.addChild(t3l);
-  t3l.on("mouseenter", function() {
+  nested.text("Layer " + i);
+  nested.on("mouseenter", function() {
     TweenMax.to(this, .2, {
       background: "#98ff67",
     })
   });
-  t3l.on("mouseleave", function() {
+  nested.on("mouseleave", function() {
     TweenMax.to(this, .2, {
       background: "#e2ffd5"
     })
   });
+
+  layer.addChild(nested);
 }
-        </pre>
+</code></pre>
         <div class="example example-3"></div>
       </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/highlight.min.js" charset="utf-8"></script>
     <script src="../dist/goolib.js" charset="utf-8"></script>
     <script>
       var t = new goolib.Layer("div", {
@@ -189,6 +193,8 @@ for (var i = 0; i < 6; i++) {
           })
         });
       }
+
+      hljs.initHighlightingOnLoad();
     </script>
   </body>
 </html>
