@@ -1,7 +1,6 @@
 var gulp          = require("gulp"),
     include       = require("gulp-include"),
-    babel         = require("gulp-babel"),
-    esdoc         = require("esdoc");
+    babel         = require("gulp-babel");
 
 
 gulp.task("scripts", function() {
