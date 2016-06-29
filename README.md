@@ -1,10 +1,35 @@
 # goolib
 > A library of smart element wrappers for rapidly building rich websites using JavaScript alone
 
-An experimental shift in perspective regarding what defined web development and how to use its capabilities in other ways than _standard_.  
+## What?
+A library with the purpose of transforming web development to something purely javascript, and "Flash-like" using extended DOM-elements.
 
-This library takes a more _Flash_ approach to web development, and uses simple JavaScript to directly manipulate DOM-elements in a controversial manner.  
+## Why?
+Because.
 
-Inspired by the works of agencies awarded for their highly interactive experiences.  
+## Usage
+The main element of `goolib` is the `goolib.Layer`. It's a fully es6 extendable class containing some helper functions for ease of use.
 
-**_Work in progress_**
+### Examples
+The `goolib.Layer` is fully chainable for rapid scaffolding. The example below adds a red box to a scene and then animates it back and forth.
+
+```javascript
+var layer = new goolib.Layer({
+  position: "absolute",
+  top: 100,
+  left: 100,
+  width: 100,
+  height: 100,
+  background: "red"
+})
+  .to(2, {
+    x: 100,
+    y: 100,
+    yoyo: true,
+    repeat: -1
+  })
+  .addTo(document.body);
+```
+
+### TODOs
+- [maybe] Implement better css3 to css2 conversion library

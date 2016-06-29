@@ -1,5 +1,12 @@
 class GoolibLayer {
-  constructor(type="div", options={}) {
+  constructor() {
+    let options = {};
+    let type = 'div';
+
+    if (typeof arguments[0] === 'string') type = arguments[0];
+    if (typeof arguments[0] === 'object') options = arguments[0];
+    if (typeof arguments[1] === 'object') options = arguments[1];
+
     this.el = document.createElement(type);
     this.set(options);
 

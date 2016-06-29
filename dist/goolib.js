@@ -1,4 +1,6 @@
-"use strict";
+'use strict';
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -12,10 +14,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
   var GoolibLayer = function () {
     function GoolibLayer() {
-      var type = arguments.length <= 0 || arguments[0] === undefined ? "div" : arguments[0];
-      var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-
       _classCallCheck(this, GoolibLayer);
+
+      var options = {};
+      var type = 'div';
+
+      if (typeof arguments[0] === 'string') type = arguments[0];
+      if (_typeof(arguments[0]) === 'object') options = arguments[0];
+      if (_typeof(arguments[1]) === 'object') options = arguments[1];
 
       this.el = document.createElement(type);
       this.set(options);
@@ -24,37 +30,37 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }
 
     _createClass(GoolibLayer, [{
-      key: "set",
+      key: 'set',
       value: function set(options) {
         TweenMax.set(this.el, options);
         return this;
       }
     }, {
-      key: "to",
+      key: 'to',
       value: function to(time, options) {
         TweenMax.to(this.el, time, options);
         return this;
       }
     }, {
-      key: "fromTo",
+      key: 'fromTo',
       value: function fromTo(time, froptions, toptions) {
         TweenMax.fromTo(this.el, time, froptions, toptions);
         return this;
       }
     }, {
-      key: "on",
+      key: 'on',
       value: function on(evt, callback) {
         this.el.addEventListener(evt, callback);
         return this;
       }
     }, {
-      key: "off",
+      key: 'off',
       value: function off(evt, callback) {
         this.el.removeEventListener(evt, callback);
         return this;
       }
     }, {
-      key: "trigger",
+      key: 'trigger',
       value: function trigger(evt, data) {
         var e = document.createEvent("Event");
         e.initEvent(evt);
@@ -63,7 +69,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         return this;
       }
     }, {
-      key: "addTo",
+      key: 'addTo',
       value: function addTo(el) {
         if (!el.nodeName) {
           el.el.appendChild(this.el);
@@ -73,7 +79,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         return this;
       }
     }, {
-      key: "addChild",
+      key: 'addChild',
       value: function addChild(el) {
         if (!el.nodeName) {
           this.el.appendChild(el.el);
@@ -83,13 +89,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         return this;
       }
     }, {
-      key: "text",
+      key: 'text',
       value: function text(_text) {
         this.el.innerText = _text;
         return this;
       }
     }, {
-      key: "html",
+      key: 'html',
       value: function html(_html) {
         this.el.innerHTML = _html;
         return this;
