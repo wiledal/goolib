@@ -26,27 +26,32 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     _createClass(GoolibLayer, [{
       key: "set",
       value: function set(options) {
-        return TweenMax.set(this.el, options);
+        TweenMax.set(this.el, options);
+        return this;
       }
     }, {
       key: "to",
       value: function to(time, options) {
-        return TweenMax.to(this.el, time, options);
+        TweenMax.to(this.el, time, options);
+        return this;
       }
     }, {
       key: "fromTo",
       value: function fromTo(time, froptions, toptions) {
-        return TweenMax.fromTo(this.el, time, froptions, toptions);
+        TweenMax.fromTo(this.el, time, froptions, toptions);
+        return this;
       }
     }, {
       key: "on",
       value: function on(evt, callback) {
         this.el.addEventListener(evt, callback);
+        return this;
       }
     }, {
       key: "off",
       value: function off(evt, callback) {
         this.el.removeEventListener(evt, callback);
+        return this;
       }
     }, {
       key: "trigger",
@@ -55,6 +60,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         e.initEvent(evt);
         e.data = data;
         this.el.dispatchEvent(e);
+        return this;
       }
     }, {
       key: "addTo",
@@ -64,6 +70,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         } else {
           el.appendChild(this.el);
         }
+        return this;
       }
     }, {
       key: "addChild",
@@ -73,16 +80,19 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         } else {
           this.el.appendChild(el);
         }
+        return this;
       }
     }, {
       key: "text",
       value: function text(_text) {
         this.el.innerText = _text;
+        return this;
       }
     }, {
       key: "html",
       value: function html(_html) {
         this.el.innerHTML = _html;
+        return this;
       }
     }]);
 

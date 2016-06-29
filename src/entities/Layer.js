@@ -7,26 +7,32 @@ class GoolibLayer {
   }
 
   set(options) {
-    return TweenMax.set(this.el, options);
+    TweenMax.set(this.el, options);
+    return this;
   }
   to(time, options) {
-    return TweenMax.to(this.el, time, options);
+    TweenMax.to(this.el, time, options);
+    return this;
   }
   fromTo(time, froptions, toptions) {
-    return TweenMax.fromTo(this.el, time, froptions, toptions);
+    TweenMax.fromTo(this.el, time, froptions, toptions);
+    return this;
   }
 
   on(evt, callback) {
     this.el.addEventListener(evt, callback);
+    return this;
   }
   off(evt, callback) {
     this.el.removeEventListener(evt, callback);
+    return this;
   }
   trigger(evt, data) {
     var e = document.createEvent("Event");
     e.initEvent(evt);
     e.data = data;
     this.el.dispatchEvent(e);
+    return this;
   }
 
   addTo(el) {
@@ -35,6 +41,7 @@ class GoolibLayer {
     }else{
       el.appendChild(this.el);
     }
+    return this;
   }
   addChild(el) {
     if (!el.nodeName) {
@@ -42,12 +49,15 @@ class GoolibLayer {
     }else{
       this.el.appendChild(el);
     }
+    return this;
   }
 
   text(text) {
     this.el.innerText = text;
+    return this;
   }
   html(html) {
     this.el.innerHTML = html;
+    return this;
   }
 }
