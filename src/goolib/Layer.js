@@ -3,11 +3,17 @@ class GoolibLayer {
     let options = {};
     let type = 'div';
 
+    this.state = new GoolibState(this);
+
     if (typeof arguments[0] === 'string') type = arguments[0];
     if (typeof arguments[0] === 'object') options = arguments[0];
     if (typeof arguments[1] === 'object') options = arguments[1];
 
     this.el = document.createElement(type);
+    this.set({
+      transform: "translate3d(0,0,0)",
+      backfaceVisibility: "hidden"
+    });
     this.set(options);
 
     return this;

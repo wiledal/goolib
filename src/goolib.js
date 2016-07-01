@@ -4,7 +4,8 @@
 
   if (!window.TweenMax) console.warn("goolib requires TweenMax to properly function!");
 
-  //= include entities/*.js
+  //= require goolib/State.js
+  //= require goolib/*.js
 
   goolib.Layer = GoolibLayer;
 
