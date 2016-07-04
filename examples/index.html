@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Layers layers layers</title>
+    <style>
+      html, body {
+        height: 100%;
+        width: 100%;
+        background: #ffffff;
+        font-family: Helvetica, sans-serif;
+      }
+      .wrapper {
+        position: relative;
+        max-width: 800px;
+        padding: 20px 20px;
+        margin: 0 auto;
+      }
+      .wrapper__inner {
+        padding: 16px 16px;
+        box-shadow: 0 2px 10px rgba(0,0,0,.5);
+      }
+      .example {
+        position: relative;
+        height: 300px;
+        background: #dddddd;
+      }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/styles/default.min.css">
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="wrapper__inner">
+        <h1>Goolib</h1>
+
+<pre><code class="javascript">
+var layer = new goolib.Layer("div", {
+  position: "absolute",
+  width: 100,
+  height: 100,
+  background: "red"
+});
+layer.addTo(document.querySelector(".example-1"));
+
+layer.to(1, {
+  x: 100,
+  y: 100,
+  repeat: -1,
+  ease: Quad.easeInOut,
+  yoyo: true
+});
+</code></pre>
+        <div class="example example-1"></div>
+
+        <p><strong>Events:</strong></p>
+        <pre><code class="javascript">
+var layer = new goolib.Layer("div", {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  background: "#006262",
+  color: "#fff",
+  x: "-50%",
+  y: "-50%",
+  cursor: "pointer",
+  padding: "14px"
+})
+layer.text("I am button");
+layer.addTo(document.querySelector(".example-2"));
+
+layer.on("mouseenter", function() {
+  layer.to(.2, {
+    scale: 2
+  })
+});
+layer.on("mouseleave", function() {
+  layer.to(.2, {
+    scale: 1
+  })
+});
+layer.on("click", function() {
+  layer.fromTo(.2, {
+    rotation: 0
+  }, {
+    rotation: 360
+  })
+});
+        </code></pre>
+        <div class="example example-2"></div>
+
+        <p><strong>Layers in layers</strong></p>
+        <pre><code class="javascript">
+var layer = new goolib.Layer("div", {
+  padding: "16px"
+});
+layer.addTo(document.querySelector('.example-3'));
+
+for (var i = 0; i < 6; i++) {
+  var nested = new goolib.Layer("div", {
+    padding: "10px"
+  });
+  nested.text("Layer " + i);
+  nested.on("mouseenter", function() {
+    TweenMax.to(this, .2, {
+      background: "#98ff67",
+    })
+  });
+  nested.on("mouseleave", function() {
+    TweenMax.to(this, .2, {
+      background: "#e2ffd5"
+    })
+  });
+
+  layer.addChild(nested);
+}
+</code></pre>
+        <div class="example example-3"></div>
+
+
+        <!-- STATES -->
+        <p><strong>States</strong></p>
+        <pre><code class="javascript">
+var layer = new goolib.Layer({
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  width: 100,
+  height: 100,
+  y: "-50%",
+  x: "-50%",
+  background: "blue",
+  color: "#fff",
+  textAlign: "center",
+  padding: "20px"
+})
+  .text("Click me to change my state")
+  .addTo(document.querySelector('.example-4'))
+  .on("click", function() {
+    layer.state.to("clicked");
+  })
+
+
+layer.state.add("default", {
+  scale: 1
+})
+  .add("scaled", {
+    scale: 2
+  })
+  .add('clicked', function() {
+    var self = this;
+    this.state.to('scaled');
+    setTimeout(function() {
+      self.state.to('default');
+    }, 1000)
+  });
+</code></pre>
+        <div class="example example-4"></div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/highlight.min.js" charset="utf-8"></script>
+    <script src="../dist/goolib.js" charset="utf-8"></script>
+    <script>
+      var t = new goolib.Layer("div", {
+        position: "absolute",
+        width: 100,
+        height: 100,
+        background: "red"
+      });
+      t.addTo(document.querySelector('.example-1'));
+
+      t.to(1, {
+        x: 100,
+        y: 100,
+        repeat: -1,
+        ease: Quad.easeInOut,
+        yoyo: true
+      })
+
+      var t2 = new goolib.Layer("div", {
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        background: "#006262",
+        color: "#fff",
+        x: "-50%",
+        y: "-50%",
+        cursor: "pointer",
+        padding: "14px"
+      })
+      t2.text("I am button");
+      t2.addTo(document.querySelector(".example-2"));
+
+      t2.on("mouseenter", function() {
+        t2.to(.2, {
+          scale: 2
+        })
+      });
+      t2.on("mouseleave", function() {
+        t2.to(.2, {
+          scale: 1
+        })
+      });
+      t2.on("click", function() {
+        t2.fromTo(.2, {
+          rotation: 0
+        }, {
+          rotation: 360
+        })
+      });
+
+      var t3 = new goolib.Layer("div", {
+        padding: "16px"
+      });
+      t3.addTo(document.querySelector('.example-3'));
+
+      for (var i = 0; i < 6; i++) {
+        var t3l = new goolib.Layer("div", {
+          padding: "10px"
+        });
+        t3l.text("Layer " + i);
+        t3.addChild(t3l);
+        t3l.on("mouseenter", function() {
+          TweenMax.to(this, .2, {
+            background: "#98ff67",
+          })
+        });
+        t3l.on("mouseleave", function() {
+          TweenMax.to(this, .2, {
+            background: "#e2ffd5"
+          })
+        });
+      }
+
+      var layer4 = new goolib.Layer({
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        width: 100,
+        height: 100,
+        y: "-50%",
+        x: "-50%",
+        background: "blue",
+        color: "#fff",
+        textAlign: "center",
+        padding: "20px"
+      })
+        .text("Click me to change my state")
+        .addTo(document.querySelector('.example-4'))
+        .on("click", function() {
+          layer4.state.to("clicked");
+        })
+
+
+      layer4.state.add("default", {
+        scale: 1
+      })
+        .add("scaled", {
+          scale: 2
+        })
+        .add('clicked', function() {
+          var self = this;
+          this.state.to('scaled');
+          setTimeout(function() {
+            self.state.to('default');
+          }, 1000)
+        });
+
+      hljs.initHighlightingOnLoad();
+    </script>
+  </body>
+</html>
