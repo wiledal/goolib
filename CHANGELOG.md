@@ -1,5 +1,8 @@
 # Goolib Changelog
 
+### 0.4.1
+  - Added `Layer.destroy()` which can be extended for all your destroying needs.
+
 ### 0.4.0
   - Added `State`
 
