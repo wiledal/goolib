@@ -19,6 +19,10 @@ class GoolibLayer {
     return this;
   }
 
+  destroy() {
+    if (this.el.parentNode) this.el.parentNode.removeChild(this.el);
+  }
+
   set(options) {
     TweenMax.set(this.el, options);
     return this;

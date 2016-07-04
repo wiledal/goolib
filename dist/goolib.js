@@ -93,6 +93,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }
 
     _createClass(GoolibLayer, [{
+      key: "destroy",
+      value: function destroy() {
+        if (this.el.parentNode) this.el.parentNode.removeChild(this.el);
+      }
+    }, {
       key: "set",
       value: function set(options) {
         TweenMax.set(this.el, options);
