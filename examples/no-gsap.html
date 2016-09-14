@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Using Goolib without Gsap</title>
+  </head>
+  <body>
+    <div class="wrapper"></div>
+
+    <script src="../dist/goolib.js" charset="utf-8"></script>
+    <script type="text/javascript">
+      var wrapper = document.querySelector('.wrapper');
+
+      var box = new goolib.Layer({
+        width: 200,
+        height: 200,
+        background: '#ff00ff'
+      })
+        .addTo(wrapper)
+        .to(2000, {
+          transform: 'translate(150px, 150px) rotate(45deg)'
+        }, {
+          iterations: Infinity
+        })
+    </script>
+  </body>
+</html>

@@ -32,6 +32,13 @@ class GoolibLayer {
     return this;
   }
   animate(time, keyframes, options = {}) {
+    if (!this.el.animate) {
+      console.warn('WebAnimations not available, using .set() instead.');
+      this.el.offsetWidth; // Trigger layout
+      this.set({ transitionDuration: time / 1000 + 's' });
+      this.set(keyframes[keyframes.length-1]);
+      return this;
+    }
     keyframes.forEach((k, i) => {
       keyframes[i] = GoolibPrefixer.prefix(k);
     });
@@ -44,11 +51,26 @@ class GoolibLayer {
   }
 
   to(time, options) {
+    if (!window.TweenMax) {
+      console.warn('TweenMax not available, using .set() instead.');
+      this.el.offsetWidth; // Trigger layout
+      this.set({ transitionDuration: time / 1000 + 's' });
+      this.set(options);
+      return this;
+    }
     TweenMax.to(this.el, time, options);
     return this;
   }
 
   fromTo(time, options, options2) {
+    if (!window.TweenMax) {
+      console.warn('TweenMax not available, using .animate() instead.');
+      this.animate(time * 1000, [
+        options,
+        options2
+      ]);
+      return this;
+    }
     TweenMax.fromTo(this.el, time, options, options2);
     return this;
   }

@@ -30,6 +30,3 @@ var layer = new goolib.Layer({
   })
   .addTo(document.body);
 ```
-
-### TODOs
-- [maybe] Implement better css3 to css2 conversion library
