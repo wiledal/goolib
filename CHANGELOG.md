@@ -1,5 +1,11 @@
 # Goolib Changelog
 
+### 0.5.0
+  - Added animate, which uses WebAnimationAPI (experimental).
+  - Switched to in-house (overkill?) prefixer.
+  - Some cleanup of source code.
+  - Not dependent on TweenMax anymore.
+
 ### 0.4.1
   - Added `Layer.destroy()` which can be extended for all your destroying needs.
 

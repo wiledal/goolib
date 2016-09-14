@@ -96,11 +96,30 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       key: "destroy",
       value: function destroy() {
         if (this.el.parentNode) this.el.parentNode.removeChild(this.el);
+        return this;
       }
     }, {
       key: "set",
       value: function set(options) {
-        TweenMax.set(this.el, options);
+        var styles = GoolibPrefixer.prefix(options);
+        for (var key in styles) {
+          this.el.style[key] = styles[key];
+        }
+        return this;
+      }
+    }, {
+      key: "animate",
+      value: function animate(time, keyframes) {
+        var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+
+        keyframes.forEach(function (k, i) {
+          keyframes[i] = GoolibPrefixer.prefix(k);
+        });
+
+        options.duration = time;
+        options.easing = options.ease || 'ease';
+
+        this.el.animate(keyframes, options);
         return this;
       }
     }, {
@@ -111,8 +130,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }
     }, {
       key: "fromTo",
-      value: function fromTo(time, froptions, toptions) {
-        TweenMax.fromTo(this.el, time, froptions, toptions);
+      value: function fromTo(time, options, options2) {
+        TweenMax.fromTo(this.el, time, options, options2);
         return this;
       }
     }, {
@@ -171,6 +190,34 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }]);
 
     return GoolibLayer;
+  }();
+
+  var GoolibPrefixer = function () {
+    function GoolibPrefixer() {
+      _classCallCheck(this, GoolibPrefixer);
+    }
+
+    _createClass(GoolibPrefixer, null, [{
+      key: "prefix",
+      value: function prefix(styles) {
+        var s = {};
+        for (var key in styles) {
+          var isNum = !isNaN(parseFloat(styles[key])) && isFinite(styles[key]);
+
+          if (isNum) styles[key] += 'px';
+          var capitalKey = key.charAt(0).toUpperCase() + key.slice(1);
+
+          s["webkit" + capitalKey] = styles[key];
+          s["moz" + capitalKey] = styles[key];
+          s["ms" + capitalKey] = styles[key];
+          s["o" + capitalKey] = styles[key];
+          s[key] = styles[key];
+        }
+        return s;
+      }
+    }]);
+
+    return GoolibPrefixer;
   }();
 
   goolib.Layer = GoolibLayer;
