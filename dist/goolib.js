@@ -10,8 +10,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   // Main goolib namespace object
   window.goolib = {};
 
-  if (!window.TweenMax) console.warn("goolib requires TweenMax to properly function!");
-
   var GoolibState = function () {
     function GoolibState(target) {
       _classCallCheck(this, GoolibState);
@@ -112,6 +110,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       value: function animate(time, keyframes) {
         var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 
+        if (!this.el.animate) {
+          console.warn('WebAnimations not available, using .set() instead.');
+          this.el.offsetWidth; // Trigger layout
+          this.set({ transitionDuration: time / 1000 + 's' });
+          this.set(keyframes[keyframes.length - 1]);
+          return this;
+        }
         keyframes.forEach(function (k, i) {
           keyframes[i] = GoolibPrefixer.prefix(k);
         });
@@ -125,12 +130,24 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }, {
       key: "to",
       value: function to(time, options) {
+        if (!window.TweenMax) {
+          console.warn('TweenMax not available, using .set() instead.');
+          this.el.offsetWidth; // Trigger layout
+          this.set({ transitionDuration: time / 1000 + 's' });
+          this.set(options);
+          return this;
+        }
         TweenMax.to(this.el, time, options);
         return this;
       }
     }, {
       key: "fromTo",
       value: function fromTo(time, options, options2) {
+        if (!window.TweenMax) {
+          console.warn('TweenMax not available, using .animate() instead.');
+          this.animate(time * 1000, [options, options2]);
+          return this;
+        }
         TweenMax.fromTo(this.el, time, options, options2);
         return this;
       }
@@ -220,5 +237,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     return GoolibPrefixer;
   }();
 
+  goolib.shutup = false;
   goolib.Layer = GoolibLayer;
 }();
