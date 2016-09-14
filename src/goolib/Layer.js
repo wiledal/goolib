@@ -21,18 +21,35 @@ class GoolibLayer {
 
   destroy() {
     if (this.el.parentNode) this.el.parentNode.removeChild(this.el);
+    return this;
   }
 
   set(options) {
-    TweenMax.set(this.el, options);
+    var styles = GoolibPrefixer.prefix(options);
+    for (var key in styles) {
+      this.el.style[key] = styles[key];
+    }
     return this;
   }
+  animate(time, keyframes, options = {}) {
+    keyframes.forEach((k, i) => {
+      keyframes[i] = GoolibPrefixer.prefix(k);
+    });
+
+    options.duration = time;
+    options.easing = options.ease || 'ease';
+
+    this.el.animate(keyframes, options)
+    return this;
+  }
+
   to(time, options) {
     TweenMax.to(this.el, time, options);
     return this;
   }
-  fromTo(time, froptions, toptions) {
-    TweenMax.fromTo(this.el, time, froptions, toptions);
+
+  fromTo(time, options, options2) {
+    TweenMax.fromTo(this.el, time, options, options2);
     return this;
   }
 
