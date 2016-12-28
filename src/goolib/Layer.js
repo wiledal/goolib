@@ -24,7 +24,8 @@ class GoolibLayer {
     return this;
   }
 
-  set(options) {
+  set(options = {}) {
+    options.transitionDuration = options.transitionDuration || '0s';
     var styles = GoolibPrefixer.prefix(options);
     for (var key in styles) {
       this.el.style[key] = styles[key];
@@ -33,9 +34,9 @@ class GoolibLayer {
   }
   animate(time, keyframes, options = {}) {
     if (!this.el.animate) {
-      console.warn('WebAnimations not available, using .set() instead.');
+      this.set(keyframes[0]);
       this.el.offsetWidth; // Trigger layout
-      this.set({ transitionDuration: time / 1000 + 's' });
+      keyframes[keyframes.length - 1].transitionDuration = time / 1000 + 's'
       this.set(keyframes[keyframes.length-1]);
       return this;
     }
@@ -44,7 +45,7 @@ class GoolibLayer {
     });
 
     options.duration = time;
-    options.easing = options.ease || 'ease';
+    options.easing = options.easing || 'ease';
 
     this.el.animate(keyframes, options)
     return this;
@@ -52,9 +53,8 @@ class GoolibLayer {
 
   to(time, options) {
     if (!window.TweenMax) {
-      console.warn('TweenMax not available, using .set() instead.');
       this.el.offsetWidth; // Trigger layout
-      this.set({ transitionDuration: time / 1000 + 's' });
+      options.transitionDuration = time / 1000 + 's';
       this.set(options);
       return this;
     }
@@ -62,13 +62,12 @@ class GoolibLayer {
     return this;
   }
 
-  fromTo(time, options, options2) {
+  fromTo(time, keyframe1, keyframe2, options = {}) {
     if (!window.TweenMax) {
-      console.warn('TweenMax not available, using .animate() instead.');
       this.animate(time * 1000, [
-        options,
-        options2
-      ]);
+        keyframe1,
+        keyframe2
+      ], options);
       return this;
     }
     TweenMax.fromTo(this.el, time, options, options2);

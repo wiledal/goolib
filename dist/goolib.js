@@ -98,7 +98,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }
     }, {
       key: "set",
-      value: function set(options) {
+      value: function set() {
+        var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+        options.transitionDuration = options.transitionDuration || '0s';
         var styles = GoolibPrefixer.prefix(options);
         for (var key in styles) {
           this.el.style[key] = styles[key];
@@ -111,9 +114,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 
         if (!this.el.animate) {
-          console.warn('WebAnimations not available, using .set() instead.');
+          this.set(keyframes[0]);
           this.el.offsetWidth; // Trigger layout
-          this.set({ transitionDuration: time / 1000 + 's' });
+          keyframes[keyframes.length - 1].transitionDuration = time / 1000 + 's';
           this.set(keyframes[keyframes.length - 1]);
           return this;
         }
@@ -122,7 +125,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         });
 
         options.duration = time;
-        options.easing = options.ease || 'ease';
+        options.easing = options.easing || 'ease';
 
         this.el.animate(keyframes, options);
         return this;
@@ -131,9 +134,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       key: "to",
       value: function to(time, options) {
         if (!window.TweenMax) {
-          console.warn('TweenMax not available, using .set() instead.');
           this.el.offsetWidth; // Trigger layout
-          this.set({ transitionDuration: time / 1000 + 's' });
+          options.transitionDuration = time / 1000 + 's';
           this.set(options);
           return this;
         }
@@ -142,10 +144,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }
     }, {
       key: "fromTo",
-      value: function fromTo(time, options, options2) {
+      value: function fromTo(time, keyframe1, keyframe2) {
+        var options = arguments.length <= 3 || arguments[3] === undefined ? {} : arguments[3];
+
         if (!window.TweenMax) {
-          console.warn('TweenMax not available, using .animate() instead.');
-          this.animate(time * 1000, [options, options2]);
+          this.animate(time * 1000, [keyframe1, keyframe2], options);
           return this;
         }
         TweenMax.fromTo(this.el, time, options, options2);
@@ -220,8 +223,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         var s = {};
         for (var key in styles) {
           var isNum = !isNaN(parseFloat(styles[key])) && isFinite(styles[key]);
+          var nopx = ['opacity'];
 
-          if (isNum) styles[key] += 'px';
+          if (isNum && nopx.indexOf(key) == -1) styles[key] += 'px';
           var capitalKey = key.charAt(0).toUpperCase() + key.slice(1);
 
           s["webkit" + capitalKey] = styles[key];

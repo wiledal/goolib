@@ -3,8 +3,9 @@ class GoolibPrefixer {
     var s = {};
     for (var key in styles) {
       var isNum = !isNaN(parseFloat(styles[key])) && isFinite(styles[key]);
+      var nopx = ['opacity'];
 
-      if (isNum) styles[key] += 'px';
+      if (isNum && nopx.indexOf(key) == -1) styles[key] += 'px';
       var capitalKey = key.charAt(0).toUpperCase() + key.slice(1);
 
       s[`webkit${capitalKey}`] = styles[key];
